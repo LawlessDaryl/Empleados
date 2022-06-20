@@ -2,6 +2,7 @@
 
 namespace Database\Seeders;
 
+use App\Models\Department;
 use Illuminate\Database\Seeder;
 
 class DepartmentSeeder extends Seeder
@@ -13,6 +14,9 @@ class DepartmentSeeder extends Seeder
      */
     public function run()
     {
-        //
+        Department ::create([
+            'name' => 'Ventas',
+            'description' => 'Departamento encargado de las ventas de la empresa'
+        ]);
     }
 }
