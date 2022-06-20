@@ -18,7 +18,8 @@ class CreatePeopleTable extends Migration
             $table->string('name', 255);
             $table->string('lastname', 255);
             $table->string('phone', 10);
-            $table->string('adress', 255);
+            $table->string('address', 255)->nullable();//opcional
+
             $table->timestamps();
         });
     }
