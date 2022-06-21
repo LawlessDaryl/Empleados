@@ -16,8 +16,6 @@
                     data-target="#theModal">Agregar</a>                    
                 </ul>
             </div>
-
-
             <div class="card">
                 <div class="table-responsive p-2">
                     <table class="table align-items-center mb-0">
@@ -68,7 +66,7 @@
 <script>
     document.addEventListener('DOMContentLoaded', function() {
 
-
+        
         window.livewire.on('item-added', msg => {
             $('#theModal').modal('hide'),
             noty(msg)
@@ -80,7 +78,7 @@
         window.livewire.on('item-deleted', msg => {
             noty(msg)
         });
-        window.livewire.on('Show-Modal', msg => {
+        window.livewire.on('show-modal', msg => {
             $('#theModal').modal('show')
         });
         window.livewire.on('modal-hide', msg => {
@@ -89,9 +87,10 @@
         window.livewire.on('hidden.bs.modal', function(e) {
             $('.er').css('display', 'none')
         });
-    });
-
+    })
     function Confirm(id, name, products) {
+        
+
         if (products > 0) {
             swal.fire({
                 title: 'PRECAUCION',
