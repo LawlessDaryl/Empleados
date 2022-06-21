@@ -1,33 +1,37 @@
-@include('common.modalHeadEmployee')
-
+@include('common.modalHead')
 
 <div class="row">
-    <div class="col-sm-12">
-        <div class="input-group">
-            <div class="input-group-prepend">
-                <span class="input-group-text">
-                    <span class="fas fa-edit">
-
-                    </span>
-                </span>
-            </div>
-            <input type="text" wire:model.lazy="name" class="form-control" placeholder="ej: Luis">
-            <input type="text" wire:model.lazy="lastname" class="form-control" placeholder="ej: Pastor">
-            <input type="text" wire:model.lazy="phono" class="form-control" placeholder="ej: 4596328">
-            <input type="text" wire:model.lazy="address" class="form-control" placeholder="ej: av. corazón">
+    <div class="col-sm-12 col-md-6">
+        <div class="form-group">
+            <label>Nombre del departamento</label>
+            <input type="text" wire:model.lazy="name" class="form-control" placeholder="ej: Sistemas"
+            maxlenght="25">
+            @error('name') <span class="text-danger er">{{ $message }}</span>@enderror
         </div>
-        @error('name') <span class="text danger er">{{$message}}</span>@enderror
-        @error('lastname') <span class="text danger er">{{$message}}</span>@enderror
-        @error('phono') <span class="text danger er">{{$message}}</span>@enderror
-        @error('address') <span class="text danger er">{{$message}}</span>@enderror
     </div>
-    <!--<div class="col-sm-12 mt-3">
-        <div class="form-group custom-file">
-            <input type="file" class="custom-file-input form-control" wire:model="image" accept="image/x-png, image/gif, image/jpeg ">
-            <label class="custom-file-label">Imagen{{$image}}</label>
-            @error('image') <span class="text-danger er">{{$message}}</span>@enderror
+    <div class="col-sm-12 col-md-6">
+        <div class="form-group">
+            <label>Descripción</label>
+            <input type="text" wire:model.lazy="description" class="form-control" placeholder="ej: 1000"
+            maxlenght="25">
+            @error('description') <span class="text-danger er">{{ $message }}</span>@enderror
         </div>
-    </div>-->
-</div>
+    </div>
+    
+</div> 
 
-@include('common.modalFooterEmployee')
+
+@include('common.modalFooter')
+
+
+
+{{-- <form>
+    <div class="form-group">
+        <label for="recipient-name" class="col-form-label">Recipient:</label>
+        <input type="text" class="form-control" value="Creative Tim" id="recipient-name">
+    </div>
+    <div class="form-group">
+        <label for="message-text" class="col-form-label">Message:</label>
+        <textarea class="form-control" id="message-text"></textarea>
+    </div>
+</form> --}}

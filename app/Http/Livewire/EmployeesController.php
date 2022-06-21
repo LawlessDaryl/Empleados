@@ -3,7 +3,6 @@
 namespace App\Http\Livewire;
 
 use Livewire\Component;
-use App\Models\Person;
 use App\Models\Employee;
 
 use Illuminate\Support\Facades\Storage;
@@ -16,7 +15,7 @@ class EmployeesController extends Component
     use WithFileUploads;
     use WithPagination;
 
-    public $user_id,$name, $search, $lastname,$phone,$address, $employee_id, $pageTitle, $componentName, $person_id, $position_id;
+    public $user_id,$name, $search, $lastname,$phone,$address, $employee_id, $pageTitle, $componentName, $person_id, $position_id, $image;
     private $pagination = 5;
 
     public function mount(){
@@ -28,7 +27,7 @@ class EmployeesController extends Component
 
     public function render()
     {
-        if (strlen($this->search) > 0) {
+        /* if (strlen($this->search) > 0) {
             $employe = Employee::join('people as p', 'p.id', 'employees.person_id')
                 ->select('employees.*', 'employees.id as emp_id', 'p.*', 'p.id as person_id')
                 ->where('p.name', 'like', '%' . $this->search . '%')
@@ -41,10 +40,11 @@ class EmployeesController extends Component
                 ->select('employees.*', 'employees.id as emp_id', 'p.*', 'p.id as person_id')                
                 ->orderBy('p.id', 'desc')
                 ->paginate($this->pagination);
-        }
+        } */
+
+        $employe = Employee::orderBy('id');
         return view('livewire.employee.component', [
-            'data' => $employe,
-            'person' => Person::orderBy('name', 'asc')->get()
+            'data' => $employe
         ])
             ->extends('layouts.theme.app')
             ->section('content');
@@ -57,7 +57,7 @@ class EmployeesController extends Component
             'phone' => 'required',
             'position_id' => 'required',
         ];
-        $message = [
+        $messages = [
             'name.required' => 'El nombre de la persona es requerido.',
             'lastname.required' => 'El apellido de la persona es requerido.',           
             'phone.required' => 'El telefono es requerido.',                  
@@ -65,12 +65,6 @@ class EmployeesController extends Component
         ];
         $this->validate($rules, $messages);
 
-        Person::create([
-            'name' => $this->name,
-            'lastname' => $this->lastname,
-            'phone' => $this->phone,
-            'address' => $this->address,            
-        ]);
 
         Employee::create([
             'person_id' => $this->person_id,
@@ -81,7 +75,7 @@ class EmployeesController extends Component
         $this->emit('item-added', 'Empleado registrado');
     }
 
-    public function Edit(Person $p)
+    public function Edit(Employee $p)
     {        
         //person
         $this->person_id = $p->id;
@@ -107,7 +101,7 @@ class EmployeesController extends Component
             'phone' => 'required',
             'position_id' => 'required',
         ];
-        $message = [
+        $messages = [
             'name.required' => 'El nombre de la persona es requerido.',
             'lastname.required' => 'El apellido de la persona es requerido.',           
             'phone.required' => 'El telefono es requerido.',                  
@@ -115,16 +109,6 @@ class EmployeesController extends Component
         ];
         $this->validate($rules, $messages);
 
-        $per = Person::find($this->person_id);
-        $per->update([
-            //person
-            'name' => $this->name,
-            'lastname' => $this->lastname,
-            'phone' => $this-> phone,
-            'address' => $this->address,
-           
-        ]);
-        $per->save();
         $e = Employee::find($this->employee_id);
         $e->update([
              //employee
@@ -140,19 +124,11 @@ class EmployeesController extends Component
 
     protected $listeners = ['deleteRow' => 'Destroy'];
 
-    public function Destroy(Person $person)
+    public function Destroy(Employee $person)
     {
         $e = Employee::find($this->employee_id);
         $e->delete();
 
-        $use = User::where('id', $person_id);
-        $use->update([
-            //person
-            'condition' => 'inactive',
-        
-        ]);
-
-        $use -> save();
         
         $person->delete();
         $this->resetUI();
