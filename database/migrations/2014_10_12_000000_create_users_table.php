@@ -21,8 +21,6 @@ class CreateUsersTable extends Migration
             $table->string('password');
             $table->enum('condition', ['active', 'inactive'])->default('active');
             $table->rememberToken();
-            
-            $table->foreignId('person_id')->constrained(); 
 
             $table->timestamps();
         });

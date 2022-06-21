@@ -12,7 +12,7 @@
                 @include('common.searchbox')
             
                 <ul class="tabs tab-pills">                    
-                    <a href="javascript:void(0)" class="btn bg-gradient-primary"
+                    <a href="javascript:void(0)" class="btn bg-gradient-primary" data-toggle="modal"
                     data-target="#theModal">Agregar</a>                    
                 </ul>
             </div>
@@ -61,7 +61,80 @@
         </div>
     </div>
     @include('livewire.departments.form')
+
 </div>
+
+
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+
+
+        window.livewire.on('item-added', msg => {
+            $('#theModal').modal('hide'),
+            noty(msg)
+        });
+        window.livewire.on('item-updated', msg => {
+            $('#theModal').modal('hide')
+            noty(msg)
+        });
+        window.livewire.on('item-deleted', msg => {
+            noty(msg)
+        });
+        window.livewire.on('Show-Modal', msg => {
+            $('#theModal').modal('show')
+        });
+        window.livewire.on('modal-hide', msg => {
+            $('#theModal').modal('hide')
+        });
+        window.livewire.on('hidden.bs.modal', function(e) {
+            $('.er').css('display', 'none')
+        });
+    });
+
+    function Confirm(id, name, products) {
+        if (products > 0) {
+            swal.fire({
+                title: 'PRECAUCION',
+                icon: 'warning',
+                text: 'No se puede eliminar el producto, ' + name + ' porque tiene ' +
+                    products + ' ventas relacionadas'
+            })
+            return;
+        }
+        swal.fire({
+            title: 'CONFIRMAR',
+            icon: 'warning',
+            text: 'Confirmar eliminar el prouducto ' + '"' + name + '"',
+            showCancelButton: true,
+            cancelButtonText: 'Cerrar',
+            cancelButtonColor: '#383838',
+            confirmButtonColor: '#3B3F5C',
+            confirmButtonText: 'Aceptar'
+        }).then(function(result) {
+            if (result.value) {
+                window.livewire.emit('deleteRow', id)
+                Swal.close()
+            }
+        })
+    }
+</script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+{{-- 
+
 <script>
     document.addEventListener('DOMContentLoaded', function() {
         
@@ -111,4 +184,4 @@
             }
         })
     }
-</script>
+</script> --}}

@@ -6,7 +6,7 @@
                     <b>{{ $componentName }}</b> | {{ $selected_id > 0 ? 'Editar' : 'Crear'}}
                 </h5>
                 <h6 class="text-center text-warning" wire:loading>Por favor espere</h6>
-                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close">
+                <button type="button" class="btn-close" {{-- data-bs-dismiss="modal" --}} aria-label="Close">
                     <span aria-hidden="true">×</span>
                 </button>
             </div>
