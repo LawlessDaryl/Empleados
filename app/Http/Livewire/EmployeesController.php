@@ -4,6 +4,8 @@ namespace App\Http\Livewire;
 
 use Livewire\Component;
 use App\Models\Employee;
+use App\Models\User;
+use App\Models\Department;
 
 use Illuminate\Support\Facades\Storage;
 use Livewire\WithFileUploads; //subir imagenes la backend
@@ -15,127 +17,176 @@ class EmployeesController extends Component
     use WithFileUploads;
     use WithPagination;
 
-    public $user_id,$name, $search, $lastname,$phone,$address, $employee_id, $pageTitle, $componentName, $person_id, $position_id, $image;
+    public $employees, 
+    $user_id,
+    $name, 
+    $search, 
+    $lastname,
+    $phone,
+    $address, 
+    $employee_id, 
+    $pageTitle, 
+    $componentName, 
+    $position_id, 
+    $image;
     private $pagination = 5;
+
+    public function paginationView(){
+        return 'vendor.livewire.bootsrtap';
+    }
 
     public function mount(){
         $this->pageTitle = 'Listado';
         $this->componentName = 'Empleados';
         $this->selected_id = 0;
-        $this->persona_id = 0;
     }
 
     public function render()
     {
-        /* if (strlen($this->search) > 0) {
-            $employe = Employee::join('people as p', 'p.id', 'employees.person_id')
-                ->select('employees.*', 'employees.id as emp_id', 'p.*', 'p.id as person_id')
-                ->where('p.name', 'like', '%' . $this->search . '%')
-                ->orWhere('p.lastname', 'like', '%' . $this->search . '%')
-                ->orWhere('p.phone', 'like', '%' . $this->search . '%')
-                ->orderBy('p.id', 'desc')
-                ->paginate($this->pagination);
-        } else {
-            $employe = Employee::join('people as p', 'p.id', 'employees.person_id')
-                ->select('employees.*', 'employees.id as emp_id', 'p.*', 'p.id as person_id')                
-                ->orderBy('p.id', 'desc')
-                ->paginate($this->pagination);
-        } */
+       //funciona 
+       /*$data = User::join('employees as emp', 'emp.user_id', 'users.id')
+            ->select('users.name','users.lastname','users.phone','users.email','emp')
+            ->where('name', 'like', '%' . $this->search . '%')
+            ->paginate($this->pagination);*/
 
-        $employe = Employee::orderBy('id');
+      /*  $data = Employee::join('users','users.id','=','employees.user_id')
+            ->join('positions', 'employees.position_id', '=', 'positions.id')
+            ->select('users.name','users.lastname','users.phone','users.email','users.condition', 'positions.name')
+            ->where('users.name', 'like', '%' . $this->search . '%')
+            ->paginate($this->pagination);*/
+
+        if (strlen($this->search) > 0)
+            $data = Employee::join('users','users.id','=','employees.user_id')
+                ->join('positions', 'employees.position_id', '=', 'positions.id')
+                ->select('users.name as username','users.lastname','users.phone','users.email','users.condition', 'positions.name as posiname')
+                ->where('users.name', 'like', '%' . $this->search . '%')
+                ->orderBy('users.name','asc')
+                ->paginate($this->pagination);
+        else
+            $data = Employee::join('users','users.id','=','employees.user_id')
+                ->join('positions', 'employees.position_id', '=', 'positions.id')
+                ->select('users.name as username','users.lastname','users.phone','users.email','users.condition', 'positions.name as posiname')
+                ->orderBy('users.name','asc')
+                ->paginate($this->pagination);
+
         return view('livewire.employee.component', [
-            'data' => $employe
+            'data' => $data,
         ])
             ->extends('layouts.theme.app')
             ->section('content');
     }
 
-    public function store(){
+    public function Store()
+    {
         $rules = [
             'name' => 'required',
-            'lastname' => 'required',
-            'phone' => 'required',
-            'position_id' => 'required',
+            'lastname' =>'required',
+            'phone' =>'required',
+            'email' =>'required|unique:users',
+            'condition' =>'required',
+            //'positions' => 'required',
+
+
         ];
         $messages = [
-            'name.required' => 'El nombre de la persona es requerido.',
-            'lastname.required' => 'El apellido de la persona es requerido.',           
-            'phone.required' => 'El telefono es requerido.',                  
-            'position_id.required' => 'El cargo es requerido.',
+            'name.required' => 'El nombre del usuario es requerido.',
+            'lastname.required' => 'El apellido del usuario es requerido',            
+            'phone.required' => 'El telefono del usuario es requerido',
+            'email.required' => 'El email del usuario es requerido',
+            'email.unique' => 'Ya existe un email con ese nombre.',
+            'condition.required' => 'la condición es requerida',
+            //'positions.required' => 'El cargo es requerido',
         ];
         $this->validate($rules, $messages);
 
-
-        Employee::create([
-            'person_id' => $this->person_id,
-            'position_id' => $this->position_id,
-                    
+        User::create([
+            'name' => $this->name,
+            'lastname' => $this->lastname,
+            'phone' => $this->phone,
+            'email' => $this->email,
+            'condition' => $this->condition,
         ]);
+        /*Employee::create([
+            'user_id'  => $this -> id,
+            'positon_id' => $this -> position_id
+        ]);*/
+
         $this->resetUI();
-        $this->emit('item-added', 'Empleado registrado');
+        $this->emit('item-added', 'Empleado Registrado');
     }
 
-    public function Edit(Employee $p)
-    {        
-        //person
-        $this->person_id = $p->id;
-        $this->name = $p->name;
-        $this->lastname = $p->lastname;
-        $this->phone = $p->phone;
-        $this->address = $p->address;
-
-        $emp = Employee::where('id', $this->person_id)->get();
-
-        //employee
-        $this->employee_id = $emp->id;                
-        $this->position = $emp->position_id;        
-
+    public function Edit(Users $user /*Employees $emp */)
+    {
+        $this->selected_id = $user->id;
+        $this->name = $user->name;
+        $this->lastname = $user->lastname;
+        $this->phone = $user->phone;
+        $this->email = $user->email;
+        $this->condition = $user->condition;
+        //$this->user_id = $emp->user_id;
+        //$this->position_id = $emp->positon_id;
 
         $this->emit('show-modal', 'show modal!');
     }
 
-    public function Update(){
+    public function Update()
+    {
         $rules = [
-            'name' => 'required',
-            'lastname' => 'required',
-            'phone' => 'required',
-            'position_id' => 'required',
+            'email' => "required|unique:users,email,{$this->selected_id}",
+            
+            
         ];
         $messages = [
-            'name.required' => 'El nombre de la persona es requerido.',
-            'lastname.required' => 'El apellido de la persona es requerido.',           
-            'phone.required' => 'El telefono es requerido.',                  
-            'position_id.required' => 'El cargo es requerido.',
+            'email.required' => 'El nombre del email es requerido.',
+            'email.unique' => 'Ya existe un email con esa dirección.',
+            
         ];
         $this->validate($rules, $messages);
 
-        $e = Employee::find($this->employee_id);
-        $e->update([
-             //employee
-             'position' => $this-> position_id
+        $us = User::find($this->selected_id);
+        $us->update([
+            'name' => $this->name,
+            'lastname' => $this->lastname,
+            'phone' => $this->phone,
+            'email' => $this->email,
+            'condition' => $this->condition
         ]);
-        $e->save();
 
-        
+        /*
+        $em = Employee::find($this->selected_id);
+        $em->update([
+            'user_id' => $this->user_id,
+            'position_id' => $this->position_id,
+        ]);
+        */
+
+
+        $us->save();
+        //$em->save();
+
         $this->resetUI();
-        $this->emit('item-updated', 'Empleado actualizado');
-
+        $this->emit('item-updated', 'Usuario Actualizado');
     }
 
     protected $listeners = ['deleteRow' => 'Destroy'];
 
-    public function Destroy(Employee $person)
+    public function Destroy(User $use/*, Employee $emp*/)
     {
-        $e = Employee::find($this->employee_id);
-        $e->delete();
-
-        
-        $person->delete();
+        $use->delete();
+        //$emp->delete();
         $this->resetUI();
-        $this->emit('item-deleted', 'persona eliminada');
+        $this->emit('item-deleted', 'usuario Eliminado');
     }
 
-
+    public function resetUI()
+    {
+        $this->name = '';
+        $this->description = '';
+        $this->phone = '';
+        $this->email = '';
+        $this->condition = '';
+        $this->search = '';
+        $this->selected_id = 0;
+        $this->resetValidation();
+    }
 }
-
-
