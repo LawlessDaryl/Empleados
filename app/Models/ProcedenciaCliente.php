@@ -11,8 +11,5 @@ class ProcedenciaCliente extends Model
 
     protected $fillable = ['procedencia', 'estado'];
     
-    public function relacionados()
-    {
-        return $this->hasMany(Cliente::class);
-    }
+    
 }

@@ -12,8 +12,7 @@
                 @include('common.searchbox')
             
                 <ul class="tabs tab-pills">                    
-                    <a href="javascript:void(0)" class="btn bg-gradient-primary" data-toggle="modal"
-                    data-target="#theModal">Agregar</a>                    
+                    <a href="javascript:void(0)" class="btn bg-gradient-primary" wire:click="Agregar()">Agregar</a>                    
                 </ul>
             </div>
             <div class="card">
@@ -46,9 +45,11 @@
                                             title="Delete">
                                             <i class="fas fa-trash"></i>
                                         </a>
+                                        <button class="btn bg-gradient-primary mb-0" onclick="argon.showSwal('warning-message-and-cancel')">Otro</button>
                                     </td>
                                 </tr>
                             @endforeach
+                            
                         </tbody>
                     </table>
                 </div>
@@ -69,7 +70,7 @@
 <script>
     document.addEventListener('DOMContentLoaded', function() {
 
-        
+
         window.livewire.on('item-added', msg => {
             $('#theModal').modal('hide'),
             noty(msg)
@@ -90,16 +91,15 @@
         window.livewire.on('hidden.bs.modal', function(e) {
             $('.er').css('display', 'none')
         });
-    })
-    function Confirm(id, name, products) {
-        
+    });
 
-        if (products > 0) {
+    function Confirm(id, name, items) {
+        if (items > 0) {
             swal.fire({
                 title: 'PRECAUCION',
                 icon: 'warning',
-                text: 'No se puede eliminar el producto, ' + name + ' porque tiene ' +
-                    products + ' ventas relacionadas'
+                text: 'No se puede eliminar la procedencia, ' + name + ' porque tiene ' +
+                    items + ' clientes relacionados'
             })
             return;
         }

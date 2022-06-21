@@ -1,7 +1,7 @@
-<div class="row sales layout-top-spacing">
-    <div class="col-sm-12">
-        <div class="widget widget-chart-one">
-            <div class="widget-heading">
+<div class="row">
+    <div class="col12">
+        <div class="card mb-4">
+            <div class="card-header p-4">
                 <h4 class="card-title">
                     <b>{{ $componentName }} | {{ $pageTitle }}</b>
                 </h4>
