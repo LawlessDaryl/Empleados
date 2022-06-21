@@ -20,6 +20,7 @@ if (win && document.querySelector('#sidenav-scrollbar')) {
 <script src="{{ asset('assets/js/argon-dashboard.min.js?v=2.0.3')}}"></script>
 
 <script src="{{ asset('assets/js/libs/jquery-3.1.1.min.js') }}"></script>
+<script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 
 
 @livewireScripts

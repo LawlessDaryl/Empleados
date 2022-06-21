@@ -45,7 +45,7 @@
                                             title="Delete">
                                             <i class="fas fa-trash"></i>
                                         </a>
-                                        <button class="btn bg-gradient-primary mb-0" onclick="argon.showSwal('warning-message-and-cancel')">Otro</button>
+                                        
                                     </td>
                                 </tr>
                             @endforeach
