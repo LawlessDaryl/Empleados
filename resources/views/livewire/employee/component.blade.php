@@ -22,7 +22,7 @@
                             <tr>
                                 <th class="text-uppercase text-secondary text font-weight-bold ps-2">Nombre</th>
                                 <th class="text-uppercase text-secondary text font-weight-bold ps-2">Apellido</th>
-                                <th class="text-uppercase text-secondary text-center">Telefono</th>
+                                <th class="text-uppercase text-secondary text-center">Teléfono</th>
                                 <th class="text-uppercase text-secondary text-center">Email</th>                                
                                 <th class="text-uppercase text-secondary text-center">Estado</th>
                                 <th class="text-uppercase text-secondary text-center">Desc. Rol</th>                                
