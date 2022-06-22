@@ -64,11 +64,11 @@
     <div class="col-sm-12 col-md-6">
         <div class="form-group">
             <label>Cargo</label>
-            <select wire:model.lazy='position_id' class="form-control">
-                <option value="Elegir" defauld="true">---</option>
-                @foreach ($posis as $cargo)
-                    <option value="{{ $cargo->id }}">{{ $cargo->name }}</option>
-                @endforeach
+            <select wire:model='posiname' class="form-control">
+                <option value="Elegir" disabled selected>Elegir</option>
+                    @foreach ($posis as $cargo)
+                        <option value="{{ $cargo->id }}">{{ $cargo->name }}</option>
+                    @endforeach
             </select>
         </div>
     </div>
