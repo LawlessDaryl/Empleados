@@ -8,5 +8,5 @@ use Illuminate\Database\Eloquent\Model;
 class History extends Model
 {
     use HasFactory;
-    protected $fillable = ['condition','reason','employee_id'];
+    protected $fillable = ['condition','reason','user_id'];
 }

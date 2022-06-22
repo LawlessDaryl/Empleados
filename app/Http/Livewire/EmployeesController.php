@@ -2,10 +2,12 @@
 
 namespace App\Http\Livewire;
 
+use App\Models\Department;
 use Livewire\Component;
 use App\Models\Employee;
+use App\Models\Position;
 use App\Models\User;
-use App\Models\Department;
+//use App\Models\Department;
 
 use Illuminate\Support\Facades\Storage;
 use Livewire\WithFileUploads; //subir imagenes la backend
@@ -18,17 +20,24 @@ class EmployeesController extends Component
     use WithPagination;
 
     public $employees, 
-    $user_id,
-    $name, 
     $search, 
-    $lastname,
-    $phone,
-    $address, 
     $employee_id, 
     $pageTitle, 
     $componentName, 
     $position_id, 
-    $image;
+    $image,
+    $user_id,
+    $name, 
+    $lastname,
+    $phone,
+    $email,
+    $address,
+    $role,
+    $posiname,
+    $password,
+    $selected_id;
+    protected $datos;
+    
     private $pagination = 5;
 
     public function paginationView(){
@@ -41,39 +50,52 @@ class EmployeesController extends Component
         $this->selected_id = 0;
     }
 
+    public function Agregar()
+    {
+        $this->resetUI();
+        $this->emit('show-modal', 'show modal!');
+    }
+
     public function render()
     {
-       //funciona 
-       /*$data = User::join('employees as emp', 'emp.user_id', 'users.id')
-            ->select('users.name','users.lastname','users.phone','users.email','emp')
-            ->where('name', 'like', '%' . $this->search . '%')
-            ->paginate($this->pagination);*/
-
-      /*  $data = Employee::join('users','users.id','=','employees.user_id')
-            ->join('positions', 'employees.position_id', '=', 'positions.id')
-            ->select('users.name','users.lastname','users.phone','users.email','users.condition', 'positions.name')
-            ->where('users.name', 'like', '%' . $this->search . '%')
-            ->paginate($this->pagination);*/
-
         if (strlen($this->search) > 0)
             $data = Employee::join('users','users.id','=','employees.user_id')
-                ->join('positions', 'employees.position_id', '=', 'positions.id')
-                ->select('users.name as username','users.lastname','users.phone','users.email','users.condition', 'positions.name as posiname')
+                ->join('positions', 'positions.id','employees.position_id')
+                ->select('employees.id as idemp','users.id as iduser',
+                'users.name as username',
+                'users.lastname',
+                'users.phone',
+                'users.email',
+                'users.condition',
+                'users.role', 
+                'positions.name as posiname',
+                'users.password')
                 ->where('users.name', 'like', '%' . $this->search . '%')
                 ->orderBy('users.name','asc')
                 ->paginate($this->pagination);
         else
-            $data = Employee::join('users','users.id','=','employees.user_id')
-                ->join('positions', 'employees.position_id', '=', 'positions.id')
-                ->select('users.name as username','users.lastname','users.phone','users.email','users.condition', 'positions.name as posiname')
+        $data = Employee::join('users','users.id','employees.user_id')
+                ->join('positions', 'positions.id', 'employees.position_id')
+                ->select('employees.id as idemp','users.id as iduser',
+                'users.name as username',
+                'users.lastname',
+                'users.phone',
+                'users.email',
+                'users.condition',
+                'users.role', 
+                'positions.name as posiname')
                 ->orderBy('users.name','asc')
                 ->paginate($this->pagination);
 
+        $posiciones = Position::orderBy('id','desc')->get();
+
         return view('livewire.employee.component', [
             'data' => $data,
+            'posis' => $posiciones,
         ])
             ->extends('layouts.theme.app')
             ->section('content');
+            
     }
 
     public function Store()
@@ -83,8 +105,9 @@ class EmployeesController extends Component
             'lastname' =>'required',
             'phone' =>'required',
             'email' =>'required|unique:users',
+            'password' => 'required',
             'condition' =>'required',
-            //'positions' => 'required',
+            'position_id' => 'required',
 
 
         ];
@@ -94,28 +117,37 @@ class EmployeesController extends Component
             'phone.required' => 'El telefono del usuario es requerido',
             'email.required' => 'El email del usuario es requerido',
             'email.unique' => 'Ya existe un email con ese nombre.',
+            'password.required' => 'La contraseña del usuario es requerida',
             'condition.required' => 'la condición es requerida',
-            //'positions.required' => 'El cargo es requerido',
+            'positions.required' => 'El cargo es requerido',
         ];
         $this->validate($rules, $messages);
 
-        User::create([
+        $ui = User::create([
             'name' => $this->name,
             'lastname' => $this->lastname,
             'phone' => $this->phone,
             'email' => $this->email,
+            'password' => $this -> password,
             'condition' => $this->condition,
+            'role' => $this->role
         ]);
-        /*Employee::create([
-            'user_id'  => $this -> id,
-            'positon_id' => $this -> position_id
-        ]);*/
+/* 
+        $uss = User::select('name')
+        ->where('email', $this->email)->first();
+        dd($uss->id); */
+
+        Employee::create([
+            'user_id'  => $ui->id,
+            'position_id' => $this->position_id
+        ]);        
+
 
         $this->resetUI();
         $this->emit('item-added', 'Empleado Registrado');
     }
 
-    public function Edit(Users $user /*Employees $emp */)
+    public function Edit(User $user /*Employees $emp */)
     {
         $this->selected_id = $user->id;
         $this->name = $user->name;
@@ -132,9 +164,7 @@ class EmployeesController extends Component
     public function Update()
     {
         $rules = [
-            'email' => "required|unique:users,email,{$this->selected_id}",
-            
-            
+            'email' => "required|unique:users,email,{$this->selected_id}",                        
         ];
         $messages = [
             'email.required' => 'El nombre del email es requerido.',
@@ -181,11 +211,16 @@ class EmployeesController extends Component
     public function resetUI()
     {
         $this->name = '';
+        $this->lastname = '';
         $this->description = '';
         $this->phone = '';
+        $this->password = '';
         $this->email = '';
         $this->condition = '';
         $this->search = '';
+        $this->posiname = '---';
+        $this->role = '---';
+        $this->condition = '---';
         $this->selected_id = 0;
         $this->resetValidation();
     }

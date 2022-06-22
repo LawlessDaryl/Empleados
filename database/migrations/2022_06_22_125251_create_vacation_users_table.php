@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CreateVacationEmployeesTable extends Migration
+class CreateVacationUsersTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,12 +13,12 @@ class CreateVacationEmployeesTable extends Migration
      */
     public function up()
     {
-        Schema::create('vacation_employees', function (Blueprint $table) {
+        Schema::create('vacation_users', function (Blueprint $table) {
             $table->id();
             $table->dateTime('departure_date');
             $table->dateTime('return_date');
             $table->string('observation',255)->nullable();
-            $table->foreignId('employee_id')->constrained();
+            $table->foreignId('user_id')->constrained();
             $table->foreignId('vacation_id')->constrained();
             $table->timestamps();
         });
@@ -31,6 +31,6 @@ class CreateVacationEmployeesTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('vacation_employees');
+        Schema::dropIfExists('vacation_users');
     }
 }

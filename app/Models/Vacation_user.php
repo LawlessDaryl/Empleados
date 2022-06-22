@@ -5,8 +5,8 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class Bond_employee extends Model
+class Vacation_user extends Model
 {
     use HasFactory;
-    protected $fillable = ['name','amount','description','employee_id','bond_id'];
+    protected $fillable = ['departure_date','return_date', 'observation','user_id','vacation_id'];
 }
