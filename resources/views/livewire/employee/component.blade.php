@@ -27,6 +27,7 @@
                                 <th class="text-uppercase text-secondary text-center">Estado</th>
                                 <th class="text-uppercase text-secondary text-center">Rol</th>
                                 <th class="text-uppercase text-secondary text-center">Cargo</th>                                
+                                <th class="text-uppercase text-secondary text-center">Actions</th>                                
 
                             </tr>
                         </thead>
@@ -41,19 +42,19 @@
                                         <p class="text-x font-weight-regular opacity-8 mb-0">{{ $emp->lastname }}</p>
                                     </td>
                                     <td>
-                                        <p class="text-x font-weight-regular opacity-8 mb-0">{{ $emp->phone }}</p>
+                                        <p class="text-x text-center font-weight-regular opacity-8 mb-0">{{ $emp->phone }}</p>
                                     </td>
                                     <td>
-                                        <p class="text-x font-weight-regular opacity-8 mb-0">{{ $emp->email }}</p>
+                                        <p class="text-x text-center font-weight-regular opacity-8 mb-0">{{ $emp->email }}</p>
                                     </td>                                    
                                     <td>
-                                        <p class="text-x font-weight-regular opacity-8 mb-0">{{ $emp->condition }}</p>
+                                        <p class="text-x text-center font-weight-regular opacity-8 mb-0">{{ $emp->condition }}</p>
                                     </td>
                                     <td>
-                                        <p class="text-x font-weight-regular opacity-8 mb-0">{{ $emp->role }}</p>
+                                        <p class="text-x text-center font-weight-regular opacity-8 mb-0">{{ $emp->role }}</p>
                                     </td>
                                     <td>
-                                        <p class="text-x font-weight-regular opacity-8 mb-0">{{ $emp->posiname }}</p>
+                                        <p class="text-x text-center font-weight-regular opacity-8 mb-0">{{ $emp->posiname }}</p>
                                     </td>
                                     <td class="text-center">
                                         <a href="javascript:void(0)" wire:click="Edit({{ $emp->id }})"
@@ -73,7 +74,7 @@
                 </div>
             </div>       
 
-            pagination
+            
 
         </div>
     </div>

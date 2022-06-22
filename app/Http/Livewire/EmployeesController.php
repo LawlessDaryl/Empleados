@@ -2,8 +2,10 @@
 
 namespace App\Http\Livewire;
 
+use App\Models\Department;
 use Livewire\Component;
 use App\Models\Employee;
+use App\Models\Position;
 use App\Models\User;
 //use App\Models\Department;
 
@@ -28,10 +30,12 @@ class EmployeesController extends Component
     $name, 
     $lastname,
     $phone,
+    $email,
     $address,
     $role,
     $posiname,
     $password;
+    protected $datos;
     
     private $pagination = 5;
 
@@ -53,21 +57,9 @@ class EmployeesController extends Component
 
     public function render()
     {
-       //funciona 
-       /*$data = User::join('employees as emp', 'emp.user_id', 'users.id')
-            ->select('users.name','users.lastname','users.phone','users.email','emp')
-            ->where('name', 'like', '%' . $this->search . '%')
-            ->paginate($this->pagination);*/
-
-      /*  $data = Employee::join('users','users.id','=','employees.user_id')
-            ->join('positions', 'employees.position_id', '=', 'positions.id')
-            ->select('users.name','users.lastname','users.phone','users.email','users.condition', 'positions.name')
-            ->where('users.name', 'like', '%' . $this->search . '%')
-            ->paginate($this->pagination);*/
-
         if (strlen($this->search) > 0)
             $data = Employee::join('users','users.id','=','employees.user_id')
-                ->join('positions', 'employees.position_id', '=', 'positions.id')
+                ->join('positions', 'positions.id','employees.position_id')
                 ->select('users.name as username',
                 'users.lastname',
                 'users.phone',
@@ -80,24 +72,27 @@ class EmployeesController extends Component
                 ->orderBy('users.name','asc')
                 ->paginate($this->pagination);
         else
-            $data = Employee::join('users','users.id','=','employees.user_id')
-                ->join('positions', 'employees.position_id', '=', 'positions.id')
+        $data = Employee::join('users','users.id','employees.user_id')
+                ->join('positions', 'positions.id', 'employees.position_id')
                 ->select('users.name as username',
                 'users.lastname',
                 'users.phone',
                 'users.email',
                 'users.condition',
                 'users.role', 
-                'positions.name as posiname',
-                'users.password')
+                'positions.name as posiname')
                 ->orderBy('users.name','asc')
                 ->paginate($this->pagination);
 
+        $posiciones = Position::orderBy('id','desc')->get();
+
         return view('livewire.employee.component', [
             'data' => $data,
+            'posis' => $posiciones,
         ])
             ->extends('layouts.theme.app')
             ->section('content');
+            
     }
 
     public function Store()
@@ -109,7 +104,7 @@ class EmployeesController extends Component
             'email' =>'required|unique:users',
             'password' => 'required',
             'condition' =>'required',
-            //'positions' => 'required',
+            'position_id' => 'required',
 
 
         ];
@@ -121,11 +116,11 @@ class EmployeesController extends Component
             'email.unique' => 'Ya existe un email con ese nombre.',
             'password.required' => 'La contraseña del usuario es requerida',
             'condition.required' => 'la condición es requerida',
-            //'positions.required' => 'El cargo es requerido',
+            'positions.required' => 'El cargo es requerido',
         ];
         $this->validate($rules, $messages);
 
-        $usuario = User::create([
+        $ui = User::create([
             'name' => $this->name,
             'lastname' => $this->lastname,
             'phone' => $this->phone,
@@ -134,31 +129,22 @@ class EmployeesController extends Component
             'condition' => $this->condition,
             'role' => $this->role
         ]);
-        /*Employee::create([
-            'user_id'  => $this -> id,
-            'positon_id' => $this -> position_id
-        ]);*/
-        ////
-         $usuario->save();
-         //dd($consulta);
-        //$consulta = User::where('email', $this->email)->get();
-        $consulta = User::orderBy('id','desc')->take(1)->get();
-        
-        foreach($consulta as $c){
-           $da = $c->id;
-        }
-
+/* 
+        $uss = User::select('name')
+        ->where('email', $this->email)->first();
+        dd($uss->id); */
 
         Employee::create([
-            'user_id' => $this->$da,
-            //'position_id' => $this->position_id 
-        ]);
+            'user_id'  => $ui->id,
+            'position_id' => $this->position_id
+        ]);        
+
 
         $this->resetUI();
         $this->emit('item-added', 'Empleado Registrado');
     }
 
-    public function Edit(Users $user /*Employees $emp */)
+    public function Edit(User $user /*Employees $emp */)
     {
         $this->selected_id = $user->id;
         $this->name = $user->name;
