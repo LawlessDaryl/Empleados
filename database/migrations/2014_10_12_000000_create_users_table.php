@@ -23,6 +23,7 @@ class CreateUsersTable extends Migration
             $table->string('password');
             $table->enum('condition', ['active', 'inactive'])->default('active');
             $table->enum('role', ['admin', 'employee'])->default('employee');
+            $table->foreignId('position_id')->constrained();
             $table->rememberToken();   
             $table->timestamps();
         });

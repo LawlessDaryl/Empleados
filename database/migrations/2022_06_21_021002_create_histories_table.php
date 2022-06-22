@@ -17,7 +17,7 @@ class CreateHistoriesTable extends Migration
             $table->id();
             $table->enum('condition', ['active', 'inactive'])->default('active');
             $table->enum('reason', ['entry', 'exit', 'vacation'])->default('entry');
-            $table->foreignId('employee_id')->constrained();
+            $table->foreignId('user_id')->constrained();
             $table->timestamps();
         });
     }
