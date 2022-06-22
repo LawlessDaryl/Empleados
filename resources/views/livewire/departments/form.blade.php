@@ -11,7 +11,7 @@
     </div>
     <div class="col-sm-12 col-md-6">
         <div class="form-group">
-            <label>Descripción</label>
+            <label>Doble</label>
             <input type="text" wire:model.lazy="description" class="form-control" placeholder="ej: 1000"
             maxlenght="25">
             @error('description') <span class="text-danger er">{{ $message }}</span>@enderror
