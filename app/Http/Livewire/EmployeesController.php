@@ -5,7 +5,7 @@ namespace App\Http\Livewire;
 use Livewire\Component;
 use App\Models\Employee;
 use App\Models\User;
-use App\Models\Department;
+//use App\Models\Department;
 
 use Illuminate\Support\Facades\Storage;
 use Livewire\WithFileUploads; //subir imagenes la backend
@@ -18,17 +18,21 @@ class EmployeesController extends Component
     use WithPagination;
 
     public $employees, 
-    $user_id,
-    $name, 
     $search, 
-    $lastname,
-    $phone,
-    $address, 
     $employee_id, 
     $pageTitle, 
     $componentName, 
     $position_id, 
-    $image;
+    $image,
+    $user_id,
+    $name, 
+    $lastname,
+    $phone,
+    $address,
+    $role,
+    $posiname,
+    $password;
+    
     private $pagination = 5;
 
     public function paginationView(){
@@ -39,6 +43,12 @@ class EmployeesController extends Component
         $this->pageTitle = 'Listado';
         $this->componentName = 'Empleados';
         $this->selected_id = 0;
+    }
+
+    public function Agregar()
+    {
+        $this->resetUI();
+        $this->emit('show-modal', 'show modal!');
     }
 
     public function render()
@@ -58,14 +68,28 @@ class EmployeesController extends Component
         if (strlen($this->search) > 0)
             $data = Employee::join('users','users.id','=','employees.user_id')
                 ->join('positions', 'employees.position_id', '=', 'positions.id')
-                ->select('users.name as username','users.lastname','users.phone','users.email','users.condition', 'positions.name as posiname')
+                ->select('users.name as username',
+                'users.lastname',
+                'users.phone',
+                'users.email',
+                'users.condition',
+                'users.role', 
+                'positions.name as posiname',
+                'users.password')
                 ->where('users.name', 'like', '%' . $this->search . '%')
                 ->orderBy('users.name','asc')
                 ->paginate($this->pagination);
         else
             $data = Employee::join('users','users.id','=','employees.user_id')
                 ->join('positions', 'employees.position_id', '=', 'positions.id')
-                ->select('users.name as username','users.lastname','users.phone','users.email','users.condition', 'positions.name as posiname')
+                ->select('users.name as username',
+                'users.lastname',
+                'users.phone',
+                'users.email',
+                'users.condition',
+                'users.role', 
+                'positions.name as posiname',
+                'users.password')
                 ->orderBy('users.name','asc')
                 ->paginate($this->pagination);
 
@@ -83,6 +107,7 @@ class EmployeesController extends Component
             'lastname' =>'required',
             'phone' =>'required',
             'email' =>'required|unique:users',
+            'password' => 'required',
             'condition' =>'required',
             //'positions' => 'required',
 
@@ -94,22 +119,40 @@ class EmployeesController extends Component
             'phone.required' => 'El telefono del usuario es requerido',
             'email.required' => 'El email del usuario es requerido',
             'email.unique' => 'Ya existe un email con ese nombre.',
+            'password.required' => 'La contraseña del usuario es requerida',
             'condition.required' => 'la condición es requerida',
             //'positions.required' => 'El cargo es requerido',
         ];
         $this->validate($rules, $messages);
 
-        User::create([
+        $usuario = User::create([
             'name' => $this->name,
             'lastname' => $this->lastname,
             'phone' => $this->phone,
             'email' => $this->email,
+            'password' => $this -> password,
             'condition' => $this->condition,
+            'role' => $this->role
         ]);
         /*Employee::create([
             'user_id'  => $this -> id,
             'positon_id' => $this -> position_id
         ]);*/
+        ////
+         $usuario->save();
+         //dd($consulta);
+        //$consulta = User::where('email', $this->email)->get();
+        $consulta = User::orderBy('id','desc')->take(1)->get();
+        
+        foreach($consulta as $c){
+           $da = $c->id;
+        }
+
+
+        Employee::create([
+            'user_id' => $this->$da,
+            //'position_id' => $this->position_id 
+        ]);
 
         $this->resetUI();
         $this->emit('item-added', 'Empleado Registrado');
@@ -181,11 +224,16 @@ class EmployeesController extends Component
     public function resetUI()
     {
         $this->name = '';
+        $this->lastname = '';
         $this->description = '';
         $this->phone = '';
+        $this->password = '';
         $this->email = '';
         $this->condition = '';
         $this->search = '';
+        $this->posiname = '---';
+        $this->role = '---';
+        $this->condition = '---';
         $this->selected_id = 0;
         $this->resetValidation();
     }

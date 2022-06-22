@@ -25,7 +25,8 @@
                                 <th class="text-uppercase text-secondary text-center">Telefono</th>
                                 <th class="text-uppercase text-secondary text-center">Email</th>                                
                                 <th class="text-uppercase text-secondary text-center">Estado</th>
-                                <th class="text-uppercase text-secondary text-center">Desc. Rol</th>                                
+                                <th class="text-uppercase text-secondary text-center">Rol</th>
+                                <th class="text-uppercase text-secondary text-center">Cargo</th>                                
 
                             </tr>
                         </thead>
@@ -47,6 +48,9 @@
                                     </td>                                    
                                     <td>
                                         <p class="text-x font-weight-regular opacity-8 mb-0">{{ $emp->condition }}</p>
+                                    </td>
+                                    <td>
+                                        <p class="text-x font-weight-regular opacity-8 mb-0">{{ $emp->role }}</p>
                                     </td>
                                     <td>
                                         <p class="text-x font-weight-regular opacity-8 mb-0">{{ $emp->posiname }}</p>
@@ -73,7 +77,7 @@
 
         </div>
     </div>
-    @include('livewire.departments.form')
+    @include('livewire.employee.form')
 
 </div>
 
