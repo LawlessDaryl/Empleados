@@ -3,35 +3,78 @@
 <div class="row">
     <div class="col-sm-12 col-md-6">
         <div class="form-group">
-            <label>Nombre del departamento</label>
-            <input type="text" wire:model.lazy="name" class="form-control" placeholder="ej: Sistemas"
+            <label>Nombre</label>
+            <input type="text" wire:model.lazy="name" class="form-control" placeholder="ej: Dolores"
             maxlenght="25">
             @error('name') <span class="text-danger er">{{ $message }}</span>@enderror
         </div>
     </div>
     <div class="col-sm-12 col-md-6">
         <div class="form-group">
-            <label>Descripción</label>
-            <input type="text" wire:model.lazy="description" class="form-control" placeholder="ej: 1000"
+            <label>Apellido</label>
+            <input type="text" wire:model.lazy="lastname" class="form-control" placeholder="ej: Fuertes"
             maxlenght="25">
             @error('description') <span class="text-danger er">{{ $message }}</span>@enderror
         </div>
     </div>
-    
+    <div class="col-sm-12 col-md-6">
+        <div class="form-group">
+            <label>Telefono</label>
+            <input type="text" wire:model.lazy="phone" class="form-control" placeholder="ej: #######"
+            maxlenght="25">
+            @error('description') <span class="text-danger er">{{ $message }}</span>@enderror
+        </div>
+    </div>
+    <div class="col-sm-12 col-md-6">
+        <div class="form-group">
+            <label>Email</label>
+            <input type="text" wire:model.lazy="email" class="form-control" placeholder="ej: doloresfuertes@gmail.com"
+            maxlenght="25">
+            @error('description') <span class="text-danger er">{{ $message }}</span>@enderror
+        </div>
+    </div>
+    <div class="col-sm-12 col-md-6">
+        <div class="form-group">
+            <label>Contraseña</label>
+            <input type="password" wire:model.lazy="password" class="form-control" placeholder="ej: ****************"
+            maxlenght="25">
+            @error('description') <span class="text-danger er">{{ $message }}</span>@enderror
+        </div>
+    </div>
+    <div class="col-sm-12 col-md-6">
+        <div class="form-group">
+            <label>Estado</label>
+            <select wire:model.lazy='condition' class="form-control">
+                <option defauld="true">---</option>
+                <option value="active">Activo</option>
+                <option value="inactive">Incativo</option>
+            </select>
+        </div>
+    </div>
+    <div class="col-sm-12 col-md-6">
+        <div class="form-group">
+            <label>Rol</label>
+            <select wire:model.lazy='role' class="form-control">
+                <option defauld="true">---</option>
+                <option value="admin">admin</option>
+                <option value="employee">employee</option>
+            </select>
+        </div>
+    </div>
+    <div class="col-sm-12 col-md-6">
+        <div class="form-group">
+            <label>Cargo</label>
+            <select wire:model.lazy='posiname' class="form-control">
+                <option value="Elegir" defauld="true">---</option>
+                @foreach ($data as $cargo)
+                    <option value="{{ $cargo->id }}">{{ $cargo->posiname }}</option>
+                @endforeach
+            </select>
+        </div>
+    </div>
 </div> 
 
 
 @include('common.modalFooter')
 
 
-
-{{-- <form>
-    <div class="form-group">
-        <label for="recipient-name" class="col-form-label">Recipient:</label>
-        <input type="text" class="form-control" value="Creative Tim" id="recipient-name">
-    </div>
-    <div class="form-group">
-        <label for="message-text" class="col-form-label">Message:</label>
-        <textarea class="form-control" id="message-text"></textarea>
-    </div>
-</form> --}}
