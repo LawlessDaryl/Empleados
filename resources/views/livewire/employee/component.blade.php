@@ -57,11 +57,11 @@
                                         <p class="text-x text-center font-weight-regular opacity-8 mb-0">{{ $emp->posiname }}</p>
                                     </td>
                                     <td class="text-center">
-                                        <a href="javascript:void(0)" wire:click="Edit({{ $emp->id }})"
+                                        <a href="javascript:void(0)" wire:click="Edit({{ $emp->idemp }})"
                                             class="btn bg-primary text-white mtmobile" title="Edit">
                                             <i class="fas fa-edit"></i>
                                         </a>
-                                        <a href="javascript:void(0)" onclick="Confirm('{{ $emp->id }}','{{ $emp->name }}')" 
+                                        <a href="javascript:void(0)" onclick="Confirm('{{ $emp->idemp }}','{{ $emp->name }}')" 
                                             class="btn bg-primary text-white mtmobile"
                                             title="Delete">
                                             <i class="fas fa-trash"></i>

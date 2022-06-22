@@ -34,7 +34,8 @@ class EmployeesController extends Component
     $address,
     $role,
     $posiname,
-    $password;
+    $password,
+    $selected_id;
     protected $datos;
     
     private $pagination = 5;
@@ -60,7 +61,8 @@ class EmployeesController extends Component
         if (strlen($this->search) > 0)
             $data = Employee::join('users','users.id','=','employees.user_id')
                 ->join('positions', 'positions.id','employees.position_id')
-                ->select('users.name as username',
+                ->select('employees.id as idemp','users.id as iduser',
+                'users.name as username',
                 'users.lastname',
                 'users.phone',
                 'users.email',
@@ -74,7 +76,8 @@ class EmployeesController extends Component
         else
         $data = Employee::join('users','users.id','employees.user_id')
                 ->join('positions', 'positions.id', 'employees.position_id')
-                ->select('users.name as username',
+                ->select('employees.id as idemp','users.id as iduser',
+                'users.name as username',
                 'users.lastname',
                 'users.phone',
                 'users.email',
@@ -161,9 +164,7 @@ class EmployeesController extends Component
     public function Update()
     {
         $rules = [
-            'email' => "required|unique:users,email,{$this->selected_id}",
-            
-            
+            'email' => "required|unique:users,email,{$this->selected_id}",                        
         ];
         $messages = [
             'email.required' => 'El nombre del email es requerido.',
