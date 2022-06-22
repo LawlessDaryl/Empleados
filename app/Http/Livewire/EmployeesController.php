@@ -130,7 +130,8 @@ class EmployeesController extends Component
             'email' => $this->email,
             'password' => $this -> password,
             'condition' => $this->condition,
-            'role' => $this->role
+            'role_id' => $this->role,
+            'position_id' => $this->position_id
         ]);
 /* 
         $uss = User::select('name')
