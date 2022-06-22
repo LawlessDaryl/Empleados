@@ -11,7 +11,7 @@ class DepartmentsController extends Component
     use WithPagination; 
 
     public $name, $search, $description, $selected_id, $pageTittle, $componentName;
-    private $pagination = 8;
+    private $pagination = 20;
 
     public function paginationView()
     {
@@ -26,12 +26,11 @@ class DepartmentsController extends Component
 
     public function render()
     {
-        $data = Department::all();
 
         if (strlen($this->search) > 0)
-            $departamento = Department::where('name', 'like', '%' . $this->search . '%')->paginate($this->pagination);
+            $data = Department::where('name', 'like', '%' . $this->search . '%')->paginate($this->pagination);
         else
-            $departamento = Department::orderBy('id', 'desc')->paginate($this->pagination);
+            $data = Department::orderBy('id', 'desc')->paginate($this->pagination);
 
         return view('livewire.departments.component', [
             'data' => $data,
@@ -58,10 +57,13 @@ class DepartmentsController extends Component
         ];
         $this->validate($rules, $messages);
 
-        Department::create([
+        $so=Department::create([
             'name' => $this->name,
             'description' => $this->description,
         ]);
+        $so->save();
+
+        dd($so);
 
         $this->resetUI();
         $this->emit('item-added', 'Departamento Registrado');

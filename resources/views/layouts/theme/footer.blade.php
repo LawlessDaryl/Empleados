@@ -7,8 +7,8 @@
             © <script>
               document.write(new Date().getFullYear())
             </script>,
-            hecho <i class="fa fa-heart"></i> por
-            <a href="https://www.creative-tim.com" class="font-weight-bold" target="_blank">Fromsoftware</a>
+            Hecho <i class="fa fa-heart"></i> por
+            <a href="#" class="font-weight-bold" target="_blank">Fromsoftware</a>
             para Ucatec
           </div>
         </div>
@@ -16,9 +16,6 @@
         <div class="col-lg-6">
           <ul class="nav nav-footer justify-content-center justify-content-lg-end">
             
-            <li class="nav-item">
-              <a href="https://www.creative-tim.com/license" class="nav-link pe-0 text-muted" target="_blank">License</a>
-            </li>
           </ul>
         </div>
 

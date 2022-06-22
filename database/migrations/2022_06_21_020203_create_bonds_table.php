@@ -15,6 +15,7 @@ class CreateBondsTable extends Migration
     {
         Schema::create('bonds', function (Blueprint $table) {
             $table->id();
+            $table->string('name',10);
             $table->decimal('minimum',10);
             $table->decimal('maximum',10);
             $table->decimal('percentage',10);

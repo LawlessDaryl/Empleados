@@ -8,5 +8,5 @@ use Illuminate\Database\Eloquent\Model;
 class Bond extends Model
 {
     use HasFactory;
-    protected $fillable = ['minimum','maximum','percentage','observation'];
+    protected $fillable = ['name','minimum','maximum','percentage','observation'];
 }

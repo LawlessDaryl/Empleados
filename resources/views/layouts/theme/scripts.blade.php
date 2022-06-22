@@ -20,6 +20,21 @@ if (win && document.querySelector('#sidenav-scrollbar')) {
 <script src="{{ asset('assets/js/argon-dashboard.min.js?v=2.0.3')}}"></script>
 
 <script src="{{ asset('assets/js/libs/jquery-3.1.1.min.js') }}"></script>
+<script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+<script src="{{ asset('plugins/notification/snackbar.min.js') }}"></script>
+
+
+<script>
+  function noty(msg, option = 1) {
+      Snackbar.show({
+          text: msg.toUpperCase(),
+          actionText: 'Cerrar',
+          actionTextColor: '#FFFFFF',
+          backgroungColor: option == 1 ? '#FF7900' : '#e7515a',
+          pos: 'top-right'
+      });
+  }
+</script>
 
 
 @livewireScripts

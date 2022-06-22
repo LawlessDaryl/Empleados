@@ -20,8 +20,10 @@
                     <table class="table align-items-center mb-0">
                         <thead>
                             <tr>
-                                <th class="text-uppercase text-secondary text font-weight-bold ps-2">Departamento</th>
-                                <th class="text-uppercase text-secondary text font-weight-bold ps-2">Descripción</th>
+                                <th class="text-uppercase text-secondary text font-weight-bold ps-2">Minimo Años</th>
+                                <th class="text-uppercase text-secondary text font-weight-bold ps-2">Máximo años</th>
+                                <th class="text-uppercase text-secondary text font-weight-bold ps-2">Porcentaje</th>
+                                <th class="text-uppercase text-secondary text font-weight-bold ps-2">Observacioness</th>
                                 <th class="text-uppercase text-secondary text-center">Acciones</th>
                             </tr>
                         </thead>
@@ -29,18 +31,24 @@
                             @foreach ($data as $dep)
                                 <tr>
                                     <td>
-                                        <p class="text-x font-weight-regular opacity-8 mb-0">{{ $dep->name }}</p>
+                                        <p class="text-x font-weight-regular opacity-8 mb-0">{{ $dep->minimum }}</p>
+                                    </td>
+                                    <td>
+                                        <p class="text-x font-weight-regular opacity-8 mb-0">{{ $dep->maximum }}</p>
+                                    </td>
+                                    <td>
+                                        <p class="text-x font-weight-regular opacity-8 mb-0">{{ $dep->percentage }}</p>
                                     </td>
 
                                     <td>
-                                        <p class="text-x font-weight-regular opacity-8 mb-0">{{ $dep->description }}</p>
+                                        <p class="text-x font-weight-regular opacity-8 mb-0">{{ $dep->observation }}</p>
                                     </td>
                                     <td class="text-center">
                                         <a href="javascript:void(0)" wire:click="Edit({{ $dep->id }})"
                                             class="btn bg-primary text-white mtmobile" title="Edit">
                                             <i class="fas fa-edit"></i>
                                         </a>
-                                        <a href="javascript:void(0)" onclick="Confirm('{{ $dep->id }}','{{ $dep->name }}')" 
+                                        <a href="javascript:void(0)" onclick="Confirm('{{ $dep->id }}','{{ $dep->minimum }}')" 
                                             class="btn bg-primary text-white mtmobile"
                                             title="Delete">
                                             <i class="fas fa-trash"></i>
@@ -58,7 +66,7 @@
 
         </div>
     </div>
-    @include('livewire.departments.form')
+    @include('livewire.bonds.form')
 
 </div>
 
