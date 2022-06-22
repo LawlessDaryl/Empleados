@@ -68,7 +68,7 @@ class BondEmployeesController extends Component
 
     public function CalcularBono()
     {
-        $this->bonoCalculado =
+        $this->bonoCalculado = 0;
     }
     public function Store()
     {
