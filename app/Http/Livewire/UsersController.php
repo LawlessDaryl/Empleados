@@ -27,6 +27,7 @@ class UsersController extends Component
         $this->componentName = 'Usuarios';
     }
 
+    /* bcrypt($this->password) */
     public function render()
     {
         $data = User::all();
