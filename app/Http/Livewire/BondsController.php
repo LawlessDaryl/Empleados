@@ -3,6 +3,8 @@
 namespace App\Http\Livewire;
 
 use App\Models\Bond;
+use App\Models\Bond_user;
+use App\Models\User;
 use Livewire\Component;
 use Livewire\WithPagination;
 
@@ -10,8 +12,12 @@ class BondsController extends Component
 {
     use WithPagination; 
 
-    public $minimum, $maximum, $percentage, $observation,
-     $search, $selected_id, $pageTittle, $componentName;
+    public $minimum, $maximum, $percentage,
+    $amount, $bond_id,
+    $user_id,$user_name, $lastname,$condition, $position_id,
+    $position_name,
+
+     $search, $selected_id, $pageTittle, $componentName, $buscarCLiente;
     private $pagination = 7;
 
     public function paginationView()
@@ -29,12 +35,47 @@ class BondsController extends Component
     {
 
         if (strlen($this->search) > 0)
-            $data = Bond::where('minimum', 'like', '%' . $this->search . '%')
-            ->orWhere('maximum', 'like', '%' . $this->search . '%')
-            ->orWhere('percentage', 'like', '%' . $this->search . '%')
-            ->paginate($this->pagination);
+        $data = Bond_user::join('bonds as b', 'b.id', 'bond_users.bond_id')
+        ->join('users as u', 'u.id', 'bond_users.user_id')
+        ->join('positions as p', 'p.id', 'users.position_id')
+        ->select('positions.id as position_id', 'positions.name as posicion',
+        'u.id as usuario_id','u.name as user_name', 'u.last_name', 'u.condition',
+        'bond_users.id as bono_usuario_id', 'bond_users.amount', 'bond_users.description',
+        'bonds.id as bond_id', 'bonds.percentage')
+        ->where('user_name', 'like', '%' . $this->search . '%')
+        ->orWhere('users.last_name', 'like', '%' . $this->search . '%')
+        ->orWhere('bond_users.amount', 'like', '%' . $this->search . '%')
+        ->orWhere('bonds.percentage', 'like', '%' . $this->search . '%')
+        ->orWhere('positions.name', 'like', '%' . $this->search . '%')
+        ->orderBy('bond_employees.id', 'desc')
+        ->paginate($this->pagination);
         else
-            $data = Bond::orderBy('id', 'desc')->paginate($this->pagination);
+        $data = Bond_user::join('bonds as b', 'b.id', 'bond_users.bond_id')
+        ->join('users as u', 'u.id', 'bond_users.user_id')
+        ->join('positions as p', 'p.id', 'users.position_id')
+        ->select('positions.id as position_id', 'positions.name as posicion',
+        'u.id as usuario_id','u.name as user_name', 'u.last_name', 'u.condition',
+        'bond_users.id as bono_usuario_id', 'bond_users.amount', 'bond_users.description',
+        'bonds.id as bond_id', 'bonds.percentage')
+        ->orWhere('positions.name', 'like', '%' . $this->search . '%')
+        ->orderBy('bond_users.id', 'desc')
+        ->paginate($this->pagination);
+
+        $datos = [];
+        if (strlen($this->buscarCliente) > 0) {
+            $datos = User::where('nombre', 'like', '%' . $this->buscarCliente . '%')
+                ->orWhere('celular', 'like', '%' . $this->buscarCliente . '%')
+                ->orWhere('telefono', 'like', '%' . $this->buscarCliente . '%')
+                ->orWhere('cedula', 'like', '%' . $this->buscarCliente . '%')
+                ->orderBy('cedula', 'desc')->get();
+            if ($datos->count() > 0) {
+                $this->condicion = 1;
+            } else {
+                $this->condicion = 0;
+            }
+        } else {
+            $this->condicion = 0;
+        }
 
         return view('livewire.bonds.component', [
             'data' => $data,
@@ -54,7 +95,8 @@ class BondsController extends Component
         $rules = [
             'minimum' => 'required|unique:bonds',
             'maximum' => 'required|unique:bonds',
-            'percentage' => 'required|unique:bonds',
+            'user_name' => 'required',
+            'last_name' => 'required',
 
         ];
         $messages = [

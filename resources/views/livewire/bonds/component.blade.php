@@ -14,6 +14,10 @@
                 <ul class="tabs tab-pills">                    
                     <a href="javascript:void(0)" class="btn bg-gradient-primary" wire:click="Agregar()">Agregar</a>                    
                 </ul>
+                <ul class="tabs tab-pills">
+                    <a href="javascript:void(0)" class="btn btn-dark" data-toggle="modal"
+                        data-target="#theUser">Asignar Cliente</a>
+                </ul>
             </div>
             <div class="card">
                 <div class="table-responsive p-2">
@@ -88,6 +92,12 @@
         });
         window.livewire.on('item-deleted', msg => {
             noty(msg)
+        });
+        window.livewire.on('modalsearchc-show', msg => {
+            $('#theUser').modal('show')
+        });
+        window.livewire.on('modalsearch-hide', msg => {
+            $('#theUser').modal('hide')
         });
         window.livewire.on('show-modal', msg => {
             $('#theModal').modal('show')
