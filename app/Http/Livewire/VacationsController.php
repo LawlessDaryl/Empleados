@@ -43,6 +43,17 @@ class VacationsController extends Component
             ->section('content');
     }
 
+    public function Edit(vacation $vacat)
+    {
+        $this->selected_id = $vacat->id;
+        $this->minimum_years = $vacat->minimum_years;
+        $this->maximum_years = $vacat->maximum_years;
+        $this->free_days = $vacat->free_days;
+        $this->observation = $vacat->observation;
+
+        $this->emit('show-modal', 'show modal!');
+    }
+
     public function Agregar()
     {
         $this->resetUI();
@@ -81,16 +92,7 @@ class VacationsController extends Component
         $this->emit('item-added', 'Vacacion registrada');
     }
 
-    public function Edit(vacation $vacat)
-    {
-        $this->selected_id = $vacat->id;
-        $this->minimum_years = $vacat->minimum_years;
-        $this->maximum_years = $vacat->maximum_years;
-        $this->free_days = $vacat->free_days;
-        $this->observation = $vacat->observation;
-
-        $this->emit('show-modal', 'show modal!');
-    }
+   
 
     public function Update()
     {
@@ -113,14 +115,14 @@ class VacationsController extends Component
         ];
         $this->validate($rules, $messages);
 
-        $dep = vacation::find($this->selected_id);
-        $dep->update([
+        $vac = vacation::find($this->selected_id);
+        $vac->update([
             'minimum_years' => $this->minimum_years,
             'maximum_years' => $this->maximum_years,
             'free_days' => $this->free_days,
             'observation' => $this->observation,
         ]);
-        $dep->save();
+        $vac->save();
 
         $this->resetUI();
         $this->emit('item-updated', 'Minimo de años actualizado');
@@ -130,7 +132,7 @@ class VacationsController extends Component
 
     public function Destroy(vacation $vacat)
     {
-        $depart->delete();
+        $vacat->delete();
         $this->resetUI();
         $this->emit('item-deleted', 'Minimo de años Eliminado');
     }
