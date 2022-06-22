@@ -21,7 +21,8 @@ class UserSeeder extends Seeder
             'email' => 'empleado@gmail.com',
             'password' => bcrypt('123'),
             'condition' => 'active',  
-            'role' => 'employee',          
+            'role' => 'employee',     
+            'position_id' => '1'     
         ]);
     }
 }
