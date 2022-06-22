@@ -64,8 +64,8 @@
     <div class="col-sm-12 col-md-6">
         <div class="form-group">
             <label>Cargo</label>
-            <select wire:model='posiname' class="form-control">
-                <option value="Elegir" disabled selected>Elegir</option>
+            <select wire:model='position_id' class="form-control">
+                <option value="{{$position_id}}" disabled selected>{{}}</option>
                     @foreach ($posis as $cargo)
                         <option value="{{ $cargo->id }}">{{ $cargo->name }}</option>
                     @endforeach

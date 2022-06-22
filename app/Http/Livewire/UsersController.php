@@ -92,7 +92,7 @@ class UsersController extends Component
 
     public function Store()
     {
-        $rules = [
+        /* $rules = [
             'name' => 'required',
             'lastname' =>'required',
             'phone' =>'required',
@@ -100,9 +100,7 @@ class UsersController extends Component
             'password' => 'required',
             'condition' =>'required',
             'role' => 'required',
-            'position_id' => 'required',
-
-
+            'position_id' => 'required'
         ];
         $messages = [
             'name.required' => 'El nombre del usuario es requerido.',
@@ -115,10 +113,12 @@ class UsersController extends Component
             'role.required' => 'El rol es requerido',
             'position.required' => 'El cargo es requerido',
         ];
-        $this->validate($rules, $messages);
+        $this->validate($rules, $messages); */
 
-        $p = Position::find($this->posiname)->first();
-        echo "hola" + $p;
+        $p = Position::select('id')
+        ->where('name',$this->posiname)
+        ->first();
+        $this->position_id = $p;
         $ui = User::create([
             'name' => $this->name,
             'lastname' => $this->lastname,
@@ -129,7 +129,6 @@ class UsersController extends Component
             'role' => $this->role,
             'position_id' => $this->position_id
         ]);
-
         $this->resetUI();
         $this->emit('item-added', 'Empleado Registrado');
     }
