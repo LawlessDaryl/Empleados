@@ -22,7 +22,7 @@
                             <tr>
                                 <th class="text-uppercase text-secondary text font-weight-bold ps-2">Nombre</th>
                                 <th class="text-uppercase text-secondary text font-weight-bold ps-2">Apellido</th>
-                                <th class="text-uppercase text-secondary text-center">Teléfono</th>
+                                <th class="text-uppercase text-secondary text-center">Telefono</th>
                                 <th class="text-uppercase text-secondary text-center">Email</th>                                
                                 <th class="text-uppercase text-secondary text-center">Estado</th>
                                 <th class="text-uppercase text-secondary text-center">Rol</th>
@@ -61,7 +61,7 @@
                                             class="btn bg-primary text-white mtmobile" title="Edit">
                                             <i class="fas fa-edit"></i>
                                         </a>
-                                        <a href="javascript:void(0)" onclick="Confirm('{{ $emp->userid }}','{{ $emp->username }}')" 
+                                        <a href="javascript:void(0)" onclick="Confirm('{{ $emp->userid }}','{{ $emp->name }}')" 
                                             class="btn bg-primary text-white mtmobile"
                                             title="Delete">
                                             <i class="fas fa-trash"></i>

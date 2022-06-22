@@ -20,6 +20,7 @@ class UsersController extends Component
     $componentName, 
     $position_id, 
     $image,
+    $userid,
     $name, 
     $lastname,
     $phone,
@@ -117,8 +118,6 @@ class UsersController extends Component
         ];
         $this->validate($rules, $messages);
 
-        $p = Position::find($this->posiname)->first();
-        echo "hola" + $p;
         $ui = User::create([
             'name' => $this->name,
             'lastname' => $this->lastname,
@@ -135,18 +134,16 @@ class UsersController extends Component
     }
     public function Edit(User $user /*Employees $emp */)
     {
-        $this -> resetUI();
-
-        $p = Position::find($user->position_id)->first();        
-
         $this->selected_id = $user->id;
         $this->name = $user->name;
         $this->lastname = $user->lastname;
         $this->phone = $user->phone;
-        $this->email = $user->email;        
+        $this->email = $user->email;
+        //$this->password = $user->password;
         $this->condition = $user->condition;
         $this->role = $user->role;
-        $this->posiname = $p->name;        
+        $this->posiname = $user->position_id;
+
         $this->emit('show-modal', 'show modal!');
     }
 
@@ -169,10 +166,10 @@ class UsersController extends Component
             'lastname' => $this->lastname,
             'phone' => $this->phone,
             'email' => $this->email,
-            'password' => bcrypt($this->password),
+            //'password' => bcrypt($this->password),
             'condition' => $this->condition,
-            'role_id' => $this->role_id,
-            'position_id' => $this->position_id
+            'role' => $this->role,
+            'posiname' => $this->position_id
         ]);
 
         /*
@@ -191,9 +188,19 @@ class UsersController extends Component
         $this->emit('item-updated', 'Usuario Actualizado');
     }
 
+    protected $listeners = ['deleteRow' => 'Destroy'];
 
+    public function Destroy(User $use)
+    {
 
+       //$usuario = User::find($use);
+      
+        $use->delete();
 
+        $this->resetUI();
+        $this->emit('item-deleted', 'usuario Eliminado');
+
+    }
 
     public function resetUI()
     {
