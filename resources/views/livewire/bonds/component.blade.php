@@ -11,23 +11,32 @@
             <div class="p-3 justify-content-between d-flex">
                 @include('common.searchbox')
             
-                <ul class="tabs tab-pills">                    
-                    <a href="javascript:void(0)" class="btn bg-gradient-primary" wire:click="Agregar()">Agregar</a>                    
-                </ul>
+                
                 <ul class="tabs tab-pills">
                     <a href="javascript:void(0)" class="btn btn-dark" data-toggle="modal"
                         data-target="#theUser">Asignar Cliente</a>
-                </ul>
+                </ul>     
+                <div class="col-lg-1 col-md-2 col-sm-10">
+                    <select wire:model.lazy="condi" class="form-control">
+                        <option value="Activos" class="">Activos</option>
+                        <option value="Inactivos" class=" ">Inactivos</option>
+                    </select>
+                    @error('condi')
+                        <span class="text-danger er">{{ $message }}</span>
+                    @enderror
+                </div>
             </div>
             <div class="card">
                 <div class="table-responsive p-2">
                     <table class="table align-items-center mb-0">
                         <thead>
                             <tr>
-                                <th class="text-uppercase text-secondary text font-weight-bold ps-2">Minimo Años</th>
-                                <th class="text-uppercase text-secondary text font-weight-bold ps-2">Máximo años</th>
-                                <th class="text-uppercase text-secondary text font-weight-bold ps-2">Porcentaje</th>
-                                <th class="text-uppercase text-secondary text font-weight-bold ps-2">Observacioness</th>
+                                <th class="text-uppercase text-secondary text font-weight-bold ps-2">Nombre</th>
+                                <th class="text-uppercase text-secondary text font-weight-bold ps-2">Apellido</th>
+                                <th class="text-uppercase text-secondary text font-weight-bold ps-2">Cargo</th>
+                                <th class="text-uppercase text-secondary text font-weight-bold ps-2">Salario</th>
+                                <th class="text-uppercase text-secondary text font-weight-bold ps-2">Bono</th>
+                                <th class="text-uppercase text-secondary text font-weight-bold ps-2">Comments</th>
                                 <th class="text-uppercase text-secondary text-center">Acciones</th>
                             </tr>
                         </thead>
@@ -35,17 +44,22 @@
                             @foreach ($data as $dep)
                                 <tr>
                                     <td>
-                                        <p class="text-x font-weight-regular opacity-8 mb-0">{{ $dep->minimum }}</p>
+                                        <p class="text-x font-weight-regular opacity-8 mb-0">{{ $dep->user_name }}</p>
                                     </td>
                                     <td>
-                                        <p class="text-x font-weight-regular opacity-8 mb-0">{{ $dep->maximum }}</p>
+                                        <p class="text-x font-weight-regular opacity-8 mb-0">{{ $dep->lastname }}</p>
                                     </td>
                                     <td>
-                                        <p class="text-x font-weight-regular opacity-8 mb-0">{{ $dep->percentage }}</p>
+                                        <p class="text-x font-weight-regular opacity-8 mb-0">{{ $dep->posicion }}</p>
                                     </td>
-
                                     <td>
-                                        <p class="text-x font-weight-regular opacity-8 mb-0">{{ $dep->observation }}</p>
+                                        <p class="text-x font-weight-regular opacity-8 mb-0">{{ $dep->amount }}</p>
+                                    </td>
+                                    <td>
+                                        <p class="text-x font-weight-regular opacity-8 mb-0">{{ $dep->amount }}</p>
+                                    </td>
+                                    <td>
+                                        <p class="text-x font-weight-regular opacity-8 mb-0">{{ $dep->description }}</p>
                                     </td>
                                     <td class="text-center">
                                         <a href="javascript:void(0)" wire:click="Edit({{ $dep->id }})"

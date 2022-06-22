@@ -63,8 +63,6 @@ class DepartmentsController extends Component
         ]);
         $so->save();
 
-        dd($so);
-
         $this->resetUI();
         $this->emit('item-added', 'Departamento Registrado');
     }

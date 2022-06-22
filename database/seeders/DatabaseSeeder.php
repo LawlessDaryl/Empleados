@@ -20,5 +20,6 @@ class DatabaseSeeder extends Seeder
         $this->call(SalarySeeder::class);        
         $this->call(PositionSeeder::class);
         $this->call(UserSeeder::class);
+        $this->call(BondSeeder::class);
     }
 }
