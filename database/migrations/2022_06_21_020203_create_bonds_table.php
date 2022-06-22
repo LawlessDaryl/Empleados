@@ -19,7 +19,6 @@ class CreateBondsTable extends Migration
             $table->decimal('minimum',10);
             $table->decimal('maximum',10);
             $table->decimal('percentage',10);
-            $table->string('observation',255)->nullable();
             $table->timestamps();
         });
     }
